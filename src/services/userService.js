@@ -219,11 +219,39 @@ let updateUserData = (data) => {
     });
 };
 
+let getAllCodeService = async (typeInput) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!typeInput) {
+                resolve({
+                    errCode: 1,
+                    errMsg: 'Type input is required',
+                });
+            } else {
+                let allcode = await db.Allcode.findAll({
+                    where: {
+                        type: typeInput
+                    }
+                });
+                resolve({
+                    errCode: 0,
+                    data: allcode
+                });
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+
+
 module.exports = {
     handleUserLogin: handleUserLogin,
     getAllUsers: getAllUsers,
     createNewUser: createNewUser,
     deleteUser: deleteUser,
-    updateUserData: updateUserData
+    updateUserData: updateUserData,
+    getAllCodeService: getAllCodeService
 
 }
