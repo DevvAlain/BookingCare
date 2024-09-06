@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       date: {
-        type: Sequelize.DATE
+        type: Sequelize.BIGINT
       },
       timeType: {
         type: Sequelize.STRING
@@ -23,11 +23,11 @@ module.exports = {
       doctorId: {
         type: Sequelize.INTEGER
       },
-      
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },  
+      },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE

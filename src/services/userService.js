@@ -124,8 +124,9 @@ let createNewUser = async (data) => {
                     phoneNumber: data.phoneNumber,
                     address: data.address,
                     gender: data.gender,
-                    roleId: data.role,
-                    positionId: data.position,
+                    roleId: data.roleId,
+                    positionId: data.positionId,
+                    image: data.avatar,
                     createdAt: new Date(),
                     updatedAt: new Date(),
                 });
@@ -175,7 +176,7 @@ let deleteUser = (userId) => {
 let updateUserData = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.id) {
+            if (!data.id || !data.roleId || !data.positionId || !data.gender) {
                 resolve({
                     errCode: 2,
                     errMsg: 'User ID is required',
@@ -194,8 +195,14 @@ let updateUserData = (data) => {
                 user.firstName = data.firstName;
                 user.lastName = data.lastName;
                 user.address = data.address;
-
-
+                user.phoneNumber = data.phoneNumber;
+                user.gender = data.gender;
+                user.roleId = data.roleId;
+                user.positionId = data.positionId;
+                if (data.avatar) {
+                    user.image = data.avatar;
+                }
+                user.image = data.avatar;
                 // Lưu các thay đổi
                 await user.save();
 
