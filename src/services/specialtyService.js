@@ -27,7 +27,79 @@ let createSpecialty = (data) => {
     });
 };
 
+let getAllSpecialties = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let data = await db.Specialty.findAll({
+            });
+            if (data && data.length > 0) {
+                data.map(item => {
+                    item.image = Buffer.from(item.image, 'base64').toString('binary');
+                    return item;
+                })
+            }
+            resolve({
+                errCode: 0,
+                data: data
+            })
+        } catch (e) {
+            reject(e)
+        }
+    })
+};
+
+let getDetailSpecialtyById = (inputId, location) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!inputId || !location) {
+                resolve({
+                    errCode: 1,
+                    errMsg: 'Missing required parameter'
+                });
+                return;
+            } else {
+                let data = await db.Specialty.findOne({
+                    where: {
+                        id: inputId
+                    },
+                    attributes: ['descriptionHTML', 'descriptionMarkdown'],
+                })
+
+                if (data) {
+                    let doctorSpecialty = [];
+                    if (location === 'ALL') {
+                        doctorSpecialty = await db.Doctor_Info.findAll({
+                            where: {
+                                specialtyId: inputId
+                            },
+                            attributes: ['doctorId', 'provinceId'],
+                        })
+                    } else {
+                        //find by location 
+                        doctorSpecialty = await db.Doctor_Info.findAll({
+                            where: {
+                                specialtyId: inputId,
+                                provinceId: location
+                            },
+                            attributes: ['doctorId', 'provinceId'],
+                        })
+                    }
+                    data.doctorSpecialty = doctorSpecialty;
+                } else data = {};
+                resolve({
+                    errCode: 0,
+                    data: data
+                });
+
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+}
 
 module.exports = {
-    createSpecialty: createSpecialty
+    createSpecialty: createSpecialty,
+    getAllSpecialties: getAllSpecialties,
+    getDetailSpecialtyById: getDetailSpecialtyById
 }

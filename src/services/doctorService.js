@@ -63,6 +63,7 @@ let saveDetailInforDoctor = (inputData) => {
                 || !inputData.selectedPrice || !inputData.selectedPayment
                 || !inputData.selectedProvince || !inputData.nameClinic
                 || !inputData.addressClinic || !inputData.note
+                || !inputData.specialtyId
             ) {
                 resolve({
                     errCode: 1,
@@ -119,6 +120,7 @@ let saveDetailInforDoctor = (inputData) => {
                     doctorInfo.addressClinic = inputData.addressClinic;
                     doctorInfo.nameClinic = inputData.nameClinic;
                     doctorInfo.note = inputData.note;
+                    doctorInfo.specialtyId = inputData.specialtyId;
                     await doctorInfo.save();
                 } else {
                     //create
@@ -130,6 +132,7 @@ let saveDetailInforDoctor = (inputData) => {
                         addressClinic: inputData.addressClinic,
                         nameClinic: inputData.nameClinic,
                         note: inputData.note,
+                        specialtyId: inputData.specialtyId,
                     });
                 }
             }
