@@ -9,7 +9,7 @@ let hashUserPassword = (password) => {
         try {
             let hashPassword = await bcrypt.hashSync(password, salt);
             resolve(hashPassword);
-        } catch (e) { 
+        } catch (e) {
             reject(e);
         }
     });
@@ -22,7 +22,7 @@ let handleUserLogin = (email, password) => {
             let isExist = await checkUserEmail(email);
             if (isExist) {
                 let user = await db.User.findOne({
-                    attributes: ['email', 'roleId', 'password', 'firstName', 'lastName'],
+                    attributes: ['id', 'email', 'roleId', 'password', 'firstName', 'lastName'],
                     where: { email: email },
                     raw: true,
                     // attributes: {
@@ -105,7 +105,7 @@ let getAllUsers = (userId) => {
 }
 
 let createNewUser = async (data) => {
-    return new Promise (async (resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             // Check email is exist?
             let check = await checkUserEmail(data.email);
